@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/authOptions";
 import { supabase } from "@/utils/supabase";
 
 export async function GET(req: NextRequest) {
@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
     .eq('id', session.user.id)
     .single();
 
-  // 日志输出.
+  // 日志输出
   console.log('session.user.id', session.user.id);
   console.log('user', user);
   console.log('error', error);
