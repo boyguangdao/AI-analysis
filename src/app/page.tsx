@@ -1,103 +1,262 @@
-import Image from "next/image";
+'use client';
+
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  // 动画变体配置
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2, // 子元素交错动画
+        delayChildren: 0.1
+      }
+    }
+  };
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut" as const
+      }
+    }
+  };
+
+  return (
+    <main className="bg-gradient-to-b from-blue-100 to-white min-h-screen p-6 font-sans">
+      {/* 主要介绍区域 - 淡入动画 */}
+      <motion.section
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl p-8 mb-12"
+      >
+        <motion.h1 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-4xl font-bold mb-2"
+        >
+          AI合同规避助手
+        </motion.h1>
+        <motion.p 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="text-gray-600 mb-6"
+        >
+          智能识别合同风险，提前规避潜在法律问题！
+        </motion.p>
+        
+        {/* 按钮动画 */}
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => window.location.href = '/analyze'}
+          className="
+            bg-blue-600 hover:bg-blue-700  /* 背景颜色和悬停效果 */
+            text-white                     /* 文字颜色 */
+            py-3 px-6                     /* 内边距 */
+            rounded-xl                     /* 圆角 */
+            font-semibold                  /* 字体粗细 */
+            transition                     /* 过渡动画 */
+            disabled:opacity-50            /* 禁用状态透明度 */
+          "
+        >
+          立即上传合同进行智能分析
+        </motion.button>
+        
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="mt-8 flex justify-center"
+        >
+          {/* 合同分析示意图占位符 */}
+          <div className="
+            w-80 h-48                    /* 宽度和高度 */
+            bg-gradient-to-r from-blue-50 to-indigo-100  /* 渐变背景 */
+            rounded-lg                    /* 圆角 */
+            flex items-center justify-center  /* 居中对齐 */
+            border-2 border-dashed border-blue-300  /* 虚线边框 */
+            text-blue-600                 /* 文字颜色 */
+            font-medium                   /* 字体粗细 */
+          ">
+            📄 合同分析示意图
+          </div>
+        </motion.div>
+      </motion.section>
+
+      {/* 支持的合同类型 - 交错动画 */}
+      <motion.section
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="max-w-5xl mx-auto grid md:grid-cols-3 gap-6 mb-12"
+      >
+        <motion.div variants={itemVariants} className="bg-white p-6 rounded-xl shadow">
+          <h3 className="font-semibold text-lg mb-2">办公/劳务合同</h3>
+          <p className="text-sm text-gray-600">常见办公协议、人事相关合同等</p>
+        </motion.div>
+        <motion.div variants={itemVariants} className="bg-white p-6 rounded-xl shadow">
+          <h3 className="font-semibold text-lg mb-2">租赁/购房协议</h3>
+          <p className="text-sm text-gray-600">房屋租赁合同、购房交易合同</p>
+        </motion.div>
+        <motion.div variants={itemVariants} className="bg-white p-6 rounded-xl shadow">
+          <h3 className="font-semibold text-lg mb-2">合作/商务协议</h3>
+          <p className="text-sm text-gray-600">项目合作、商务协议等文件</p>
+        </motion.div>
+      </motion.section>
+
+      {/* 分析流程说明 - 从下往上动画 */}
+      <motion.section 
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="max-w-5xl mx-auto mb-12"
+      >
+        <motion.h2 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="text-2xl font-bold mb-6"
+        >
+          分析流程
+        </motion.h2>
+        <div className="grid md:grid-cols-3 gap-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            viewport={{ once: true }}
+            whileHover={{ y: -5 }}
+            className="bg-white p-6 rounded-xl shadow cursor-pointer"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <h4 className="font-semibold mb-2">读取合同内容</h4>
+            <p className="text-sm text-gray-600">使用OCR及文本提取技术自动识别合同主要信息</p>
+          </motion.div>
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+            whileHover={{ y: -5 }}
+            className="bg-white p-6 rounded-xl shadow cursor-pointer"
           >
-            Read our docs
-          </a>
+            <h4 className="font-semibold mb-2">模型智能判断</h4>
+            <p className="text-sm text-gray-600">判断合同类型并使用专业模型解析风险项</p>
+          </motion.div>
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            viewport={{ once: true }}
+            whileHover={{ y: -5 }}
+            className="bg-white p-6 rounded-xl shadow cursor-pointer"
+          >
+            <h4 className="font-semibold mb-2">给出建议优化</h4>
+            <p className="text-sm text-gray-600">明确指出风险区域及建议修改方向</p>
+          </motion.div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      </motion.section>
+
+      {/* 免费使用计划 - 数字计数动画 */}
+      <motion.section 
+        initial={{ opacity: 0, scale: 0.9 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="max-w-5xl mx-auto mb-12"
+      >
+        <motion.h2 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-2xl font-bold mb-6"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          免费使用计划
+        </motion.h2>
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="bg-white p-6 rounded-xl shadow flex flex-col md:flex-row items-center justify-around text-center"
         >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            className="transition-transform"
+          >
+            <motion.div 
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              transition={{ duration: 0.5, type: "spring", stiffness: 200 }}
+              viewport={{ once: true }}
+              className="text-4xl font-bold text-blue-600 mb-2"
+            >
+              1
+            </motion.div>
+            <p className="text-gray-600">份合同起分析</p>
+          </motion.div>
+          <motion.div 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            viewport={{ once: true }}
+            className="text-2xl font-bold mx-4"
+          >
+            →
+          </motion.div>
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            className="transition-transform"
+          >
+            <motion.div 
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.4, type: "spring", stiffness: 200 }}
+              viewport={{ once: true }}
+              className="text-4xl font-bold text-blue-600 mb-2"
+            >
+              3
+            </motion.div>
+            <p className="text-gray-600">测试免费</p>
+          </motion.div>
+          <motion.div 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            viewport={{ once: true }}
+            className="text-2xl font-bold mx-4"
+          >
+            →
+          </motion.div>
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            className="transition-transform"
+          >
+            <motion.div 
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.6, type: "spring", stiffness: 200 }}
+              viewport={{ once: true }}
+              className="text-4xl font-bold text-blue-600 mb-2"
+            >
+              5
+            </motion.div>
+            <p className="text-gray-600">正式合同分析</p>
+          </motion.div>
+        </motion.div>
+      </motion.section>
+    </main>
   );
 }
